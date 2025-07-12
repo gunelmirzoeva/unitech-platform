@@ -21,6 +21,11 @@ spring:
     host: localhost
     port: 6379
 
+app:
+  jwt:
+    secret: "roxkA8P+1j2Z6Z/sDSNtJ6mQcekYhTPkjFMgPPvEZr4="
+    expiration-ms: 86400000
+
 eureka:
   client:
     service-url:
