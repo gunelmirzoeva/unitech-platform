@@ -1,7 +1,7 @@
 package com.unitech.auth.controller;
 
 import com.unitech.auth.dto.AuthResponse;
-import com.unitech.auth.dto.RegisterRequest;
+import com.unitech.auth.dto.request.RegisterRequest;
 import com.unitech.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

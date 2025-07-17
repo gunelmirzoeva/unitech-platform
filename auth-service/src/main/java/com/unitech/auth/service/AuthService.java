@@ -1,7 +1,7 @@
 package com.unitech.auth.service;
 
 import com.unitech.auth.dto.AuthResponse;
-import com.unitech.auth.dto.RegisterRequest;
+import com.unitech.auth.dto.request.RegisterRequest;
 import com.unitech.auth.enums.Role;
 import com.unitech.auth.model.User;
 import com.unitech.auth.repository.UserRepository;

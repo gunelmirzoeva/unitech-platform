@@ -2,17 +2,16 @@ package com.unitech.auth.model;
 
 import com.unitech.auth.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "users",indexes = {
 @Index(columnList = "email", unique = true),
 @Index(columnList = "username", unique = true)
 })
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,6 +30,8 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(nullable = false)
+    @Builder.Default
+    private Role role = Role.USER;
 
 }
