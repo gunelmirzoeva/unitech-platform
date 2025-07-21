@@ -1,60 +1,37 @@
-### Gradle ###
-.gradle/
+HELP.md
+.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-### IDE ###
-# IntelliJ
-.idea/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
 *.ipr
-*.iws
 out/
-**/.idea/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-# Eclipse
-.classpath
-.project
-.settings/
-bin/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-# VS Code
+### VS Code ###
 .vscode/
-
-# NetBeans
-nbproject/private/
-nbbuild/
-nbdist/
-.nb-gradle/
-
-### Build ###
-target/
-dependency-reduced-pom.xml
-
-### Logs ###
-*.log
-logs/
-
-### Environment ###
-.env
-*.env
-.DS_Store
-
-### Database ###
-*.db
-*.sqlite
-*.h2.db
-
-### System ###
-Thumbs.db
-
-### Application ###
-application.properties
-application.yml
-!src/main/resources/application*.yml
-!src/test/resources/application*.yml
-
-### Docker ###
-docker-compose.yml
-Dockerfile
-docker-compose.*.yml

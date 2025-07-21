@@ -1,4 +1,4 @@
-package com.unitech.auth;
+package com.unitech.auth_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
