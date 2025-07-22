@@ -30,6 +30,9 @@ public class Transfer {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @Column(unique = true)
+    private String idempotencyKey;
+
     @Column(nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
 

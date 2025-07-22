@@ -12,7 +12,7 @@ public class RabbitMQConfig {
 
     @Bean
     public TopicExchange topicExchange() {
-        return new TopicExchange("topicExchange");
+        return new TopicExchange("transfer.exchange");
     }
 
     @Bean
