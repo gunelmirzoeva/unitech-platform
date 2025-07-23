@@ -1,12 +1,13 @@
-package com.unitech.auth_service.service;
+package com.unitech.auth_service.service.impl;
 
 import com.unitech.auth_service.config.JwtService;
-import com.unitech.auth_service.dto.AuthenticationRequest;
 import com.unitech.auth_service.dto.AuthenticationResponse;
+import com.unitech.auth_service.dto.LoginRequest;
 import com.unitech.auth_service.dto.RegisterRequest;
 import com.unitech.auth_service.entity.User;
 import com.unitech.auth_service.enums.Role;
 import com.unitech.auth_service.repository.UserRepository;
+import com.unitech.auth_service.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -37,7 +38,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(RegisterRequest request) {
+    public AuthenticationResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

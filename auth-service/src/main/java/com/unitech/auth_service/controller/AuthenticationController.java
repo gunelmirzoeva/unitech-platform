@@ -1,6 +1,7 @@
 package com.unitech.auth_service.controller;
 
 import com.unitech.auth_service.dto.AuthenticationResponse;
+import com.unitech.auth_service.dto.LoginRequest;
 import com.unitech.auth_service.dto.RegisterRequest;
 import com.unitech.auth_service.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody RegisterRequest request
+            @RequestBody LoginRequest request
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(service.login(request));
     }
 }
