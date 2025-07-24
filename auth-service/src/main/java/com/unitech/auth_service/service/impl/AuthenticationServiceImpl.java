@@ -33,6 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
