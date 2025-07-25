@@ -11,4 +11,5 @@ public interface AccountService {
     AccountResponse getAccountByUserId(UUID userId);
     AccountResponse getAccountByIban(String iban);
     void updateBalance(String iban, BigDecimal amount);
+    void performTransfer(String fromIban, String toIban, BigDecimal amount);
 }

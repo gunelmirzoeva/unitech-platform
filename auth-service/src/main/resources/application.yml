@@ -20,7 +20,16 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+
+
+#eureka:
+  #client:
+    #service-url:
+      #defaultZone: http://localhost:8761/eureka/

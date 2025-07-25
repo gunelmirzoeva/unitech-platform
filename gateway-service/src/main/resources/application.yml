@@ -24,6 +24,14 @@ spring:
                 - AuthenticationFilter
                 - RewritePath=/accounts/(?<segment>.*), /${segment}
 
+            - id: transfer-service
+              uri: lb://transfer-service
+              predicates:
+                - Path=/transfers/**
+              filters:
+                - AuthenticationFilter
+                - RewritePath=/transfers(?<segment>/?.*), /$\{segment}
+
 eureka:
   client:
     service-url:
@@ -31,3 +39,7 @@ eureka:
 
 jwt:
   secret: "N4ZsumsfTtRHhxk3Z3uxVMNzH7e5eJDPGltcroStCu0="
+
+logging:
+  level:
+    org.springframework.security: DEBUG

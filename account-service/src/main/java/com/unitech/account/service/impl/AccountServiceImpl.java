@@ -77,6 +77,44 @@ public class AccountServiceImpl implements AccountService {
         log.info("Balance updated for IBAN: {} (New balance: {})", iban, newBalance);
     }
 
+    @Override
+    @Transactional // Ensures atomicity: all or nothing
+    public void performTransfer(String fromIban, String toIban, BigDecimal amount) {
+        log.info("Initiating transfer from {} to {} for amount {}", fromIban, toIban, amount);
+
+        // 1. Get both accounts and lock them for the transaction
+        Account fromAccount = accountRepository.findByIban(fromIban)
+                .orElseThrow(() -> new AccountNotFoundException("Sender account not found: " + fromIban));
+
+        Account toAccount = accountRepository.findByIban(toIban)
+                .orElseThrow(() -> new AccountNotFoundException("Receiver account not found: " + toIban));
+
+        // 2. Validate accounts
+        if (!fromAccount.isActive() || !toAccount.isActive()) {
+            throw new IllegalStateException("One or both accounts are inactive.");
+        }
+
+        if (fromAccount.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientFundsException("Insufficient funds in account: " + fromIban);
+        }
+
+        if (!fromAccount.getCurrency().equals(toAccount.getCurrency())) {
+            // For simplicity, we assume same currency. Add exchange logic later if needed.
+            throw new IllegalArgumentException("Currency mismatch between accounts.");
+        }
+
+        // 3. Perform debit and credit
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        toAccount.setBalance(toAccount.getBalance().add(amount));
+
+        // 4. Save both accounts. The transaction will commit here.
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+
+        log.info("Transfer completed successfully.");
+    }
+
+
     private AccountResponse mapToResponse(Account account) {
         return AccountResponse.builder()
                 .id(account.getId())

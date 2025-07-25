@@ -2,6 +2,7 @@ package com.unitech.account.controller;
 
 import com.unitech.account.dto.AccountResponse;
 import com.unitech.account.dto.CreateAccountRequest;
+import com.unitech.account.dto.InternalTransferRequest;
 import com.unitech.account.dto.UpdateBalanceRequest; // We'll create this DTO
 import com.unitech.account.service.AccountService;
 import jakarta.validation.Valid;
@@ -61,6 +62,12 @@ public class AccountController {
     public ResponseEntity<Void> updateBalance(@PathVariable String iban, @Valid @RequestBody UpdateBalanceRequest request) {
         // The amount can be positive (deposit) or negative (withdrawal)
         accountService.updateBalance(iban, request.getAmount());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/internal/transfer")
+    public ResponseEntity<Void> performInternalTransfer(@RequestBody InternalTransferRequest request) {
+        accountService.performTransfer(request.getFromIban(), request.getToIban(), request.getAmount());
         return ResponseEntity.ok().build();
     }
 }

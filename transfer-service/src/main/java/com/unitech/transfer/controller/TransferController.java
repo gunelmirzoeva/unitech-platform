@@ -1,25 +1,23 @@
 package com.unitech.transfer.controller;
 
 import com.unitech.transfer.dto.TransferRequest;
-import com.unitech.transfer.model.Transfer;
+import com.unitech.transfer.dto.TransferResponse;
 import com.unitech.transfer.service.TransferService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/transfers")
+@RequestMapping("/")
+@RequiredArgsConstructor
 public class TransferController {
-
-    @Autowired
-    private TransferService transferService;
+    private final TransferService transferService;
 
     @PostMapping
-    public ResponseEntity<Transfer> makeTransfer(@Valid @RequestBody TransferRequest request) {
-        return ResponseEntity.ok(transferService.transfer(request));
+    public ResponseEntity<TransferResponse> createTransfer(@Valid @RequestBody TransferRequest request) {
+        TransferResponse response = transferService.createTransfer(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

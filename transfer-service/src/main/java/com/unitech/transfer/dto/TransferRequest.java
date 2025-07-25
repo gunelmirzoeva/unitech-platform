@@ -1,27 +1,18 @@
 package com.unitech.transfer.dto;
 
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 public class TransferRequest {
-
+    @NotBlank
+    private String fromIban;
+    @NotBlank
+    private String toIban;
     @NotNull
-    @PositiveOrZero(message = "Sender ID must be positive")
-    private Long senderAccountId;
-
-    @NotNull
-    @PositiveOrZero(message = "Receiver ID must be positive")
-    private Long receiverAccountId;
-
-    @NotNull
-    private String idempotencyKey;
-
-    @NotNull
-    @Min(value = 1, message = "Amount must be at least 1")
+    @DecimalMin(value = "0.01")
     private BigDecimal amount;
 }

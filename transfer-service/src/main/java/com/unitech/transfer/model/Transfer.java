@@ -1,41 +1,30 @@
 package com.unitech.transfer.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "transfers")
-@Data
+@Getter
+@Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Transfer {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @Column(nullable = false)
-    private Long senderAccountId;
-
-    @Column(nullable = false)
-    private Long receiverAccountId;
-
-    @Column(nullable = false)
+    private String fromIban;
+    private String toIban;
     private BigDecimal amount;
+    private String status; //  "COMPLETED", "FAILED"
+    private String failureReason;
 
-    @Column(unique = true)
-    private String idempotencyKey;
-
-    @Column(nullable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
-
-    @Column(nullable = false)
-    private String status;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

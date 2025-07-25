@@ -2,6 +2,7 @@ package com.unitech.gateway.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -73,7 +74,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     // Method to validate the JWT token using the jjwt library
     private void validateToken(String token) {
         // We need a SecretKey object for validation
-        byte[] keyBytes = jwtSecret.getBytes();
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
 
         // The parser will throw an exception if the token is invalid (e.g., expired, wrong signature)

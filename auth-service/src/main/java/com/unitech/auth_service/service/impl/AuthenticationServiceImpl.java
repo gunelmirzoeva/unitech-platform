@@ -6,6 +6,8 @@ import com.unitech.auth_service.dto.LoginRequest;
 import com.unitech.auth_service.dto.RegisterRequest;
 import com.unitech.auth_service.entity.User;
 import com.unitech.auth_service.enums.Role;
+import com.unitech.auth_service.exception.DuplicateResourceException;
+import com.unitech.auth_service.exception.ResourceNotFoundException;
 import com.unitech.auth_service.repository.UserRepository;
 import com.unitech.auth_service.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicateResourceException("Email already exists: " + request.getEmail());
+        }
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -47,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 )
         );
         var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

@@ -1,20 +1,18 @@
 package com.unitech.transfer.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class TransferResponse {
-
-    private Long id;
-    private Long senderAccountId;
-    private Long receiverAccountId;
+    private UUID transactionId;
+    private String fromIban;
+    private String toIban;
     private BigDecimal amount;
-    private LocalDateTime timestamp;
     private String status;
-
+    private LocalDateTime timestamp;
 }
