@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -112,6 +114,26 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(toAccount);
 
         log.info("Transfer completed successfully.");
+    }
+
+    //this one is for testing delete after your work is done.
+    @Override
+    @Transactional
+    public void deleteAllAccounts() {
+        log.info("Deleting all accounts for testing purposes");
+        accountRepository.deleteAll();
+        log.info("All accounts deleted successfully");
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccounts() {
+        log.info("Retrieving all accounts");
+        List<Account> accounts = accountRepository.findAll();
+        List<AccountResponse> responses = accounts.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+        log.info("Retrieved {} accounts", responses.size());
+        return responses;
     }
 
 
