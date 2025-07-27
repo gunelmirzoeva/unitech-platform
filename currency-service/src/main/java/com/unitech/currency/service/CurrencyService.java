@@ -1,32 +1,46 @@
 package com.unitech.currency.service;
 
-import com.unitech.currency.client.MockExchangeApiClient;
-import com.unitech.currency.model.ExchangeRequest;
-import com.unitech.currency.model.ExchangeResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
+import com.unitech.currency.dtos.ConversionRequest;
+import com.unitech.currency.dtos.ConversionResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class CurrencyService {
 
-    private final MockExchangeApiClient mockExchangeApiClient;
+    private final RestTemplate restTemplate;
+    private final String apiKey;
+    private final String baseUrl;
 
-    @Cacheable(value = "exchangeRates", key = "#request.from + '-' + #request.to")
-    public ExchangeResponse convert(ExchangeRequest request) {
+    public CurrencyService(RestTemplate restTemplate,
+                           @Value("${exchangerate.api.key}") String apiKey,
+                           @Value("${exchangerate.api.base-url}") String baseUrl) {
+        this.restTemplate = restTemplate;
+        this.apiKey = apiKey;
+        this.baseUrl = baseUrl;
+    }
 
-        BigDecimal rate = mockExchangeApiClient.getExchangeRate(request.getFrom(), request.getTo());
+    public ConversionResponse convertCurrency(ConversionRequest request) {
+        String url = String.format("%s/%s/pair/%s/%s/%s",
+                baseUrl, apiKey, request.getFromCurrency(), request.getToCurrency(), request.getAmount());
 
-        if (rate.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Invalid exchange rate: " + rate);
+        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+
+        if (response == null || !"success".equals(response.get("result"))) {
+            throw new RuntimeException("Failed to fetch conversion rate: " + response.get("error-type"));
         }
 
-        BigDecimal converted = request.getAmount().multiply(rate).setScale(2, RoundingMode.HALF_UP);
+        ConversionResponse conversionResponse = new ConversionResponse();
+        conversionResponse.setFromCurrency(request.getFromCurrency());
+        conversionResponse.setToCurrency(request.getToCurrency());
+        conversionResponse.setAmount(request.getAmount());
+        conversionResponse.setExchangeRate((Double) response.get("conversion_rate"));
+        conversionResponse.setConvertedAmount((Double) response.get("conversion_result"));
 
-        return new ExchangeResponse(rate, converted, request.getFrom() + "-" + request.getTo());
+        return conversionResponse;
     }
+
 }

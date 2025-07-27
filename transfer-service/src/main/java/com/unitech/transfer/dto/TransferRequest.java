@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 
 @Data
 public class TransferRequest {
-    @NotBlank
+    @NotBlank(message = "From IBAN is required")
     private String fromIban;
-    @NotBlank
+    @NotBlank(message = "To IBAN is required")
     private String toIban;
-    @NotNull
-    @DecimalMin(value = "0.01")
+    @NotNull(message = "Amount is required")
+    @DecimalMin(value = "0.01", message = "Amount must be at least 0.01")
     private BigDecimal amount;
 }

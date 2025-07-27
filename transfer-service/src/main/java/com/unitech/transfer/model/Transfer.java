@@ -3,6 +3,7 @@ package com.unitech.transfer.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,10 +20,18 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     private String fromIban;
+
+    @Column(nullable = false)
     private String toIban;
+
+    @Column(nullable = false)
     private BigDecimal amount;
-    private String status; //  "COMPLETED", "FAILED"
+
+    @Column(nullable = false)
+    private String status;
+
     private String failureReason;
 
     @CreationTimestamp
